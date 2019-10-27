@@ -24,8 +24,8 @@ public class Client_Multicast extends Thread{
                 DatagramPacket incoming_multicast = new DatagramPacket(received_multicast, received_multicast.length);
                 try {
                     msocket.receive(incoming_multicast);
-                    System.out.println("CM.java line 27: Multicast received from "+incoming_multicast.getAddress());
-                    System.out.println("CM.java line 28: local host "+InetAddress.getLocalHost());
+//                    System.out.println("CM.java line 27: Multicast received from "+incoming_multicast.getAddress());
+//                    System.out.println("CM.java line 28: local host "+InetAddress.getLocalHost());
                     route_table_object.deposit_packet(incoming_multicast.getAddress(),incoming_multicast.getData());
                 } catch (Exception e) {
                     e.printStackTrace();

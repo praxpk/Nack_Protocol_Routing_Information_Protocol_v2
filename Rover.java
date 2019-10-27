@@ -39,7 +39,7 @@ public class Rover {
             System.out.println("R.java line 39: My assigned ip address : "+assigned_ip);
             System.out.println("R.java line 40: My real ip "+InetAddress.getLocalHost());
             DatagramSocket ds = new DatagramSocket(60000);
-            Routing_table routing_table = new Routing_table(InetAddress.getByName(assigned_ip),ds);
+            Routing_table routing_table = new Routing_table(InetAddress.getByName(assigned_ip),InetAddress.getLocalHost(),ds);
             Client client = new Client(routing_table,ds);
             Client_Multicast client_multicast= new Client_Multicast(routing_table);
             client.start();

@@ -20,15 +20,17 @@ public class Routing_table extends Thread{
     private static boolean active_table;
     public static DatagramSocket sender_socket;
 
-    public Routing_table(InetAddress this_assigned_ip, DatagramSocket ds){
+    public Routing_table(InetAddress this_assigned_ip,InetAddress this_real_ip, DatagramSocket ds){
         this.active_table = true;
         this.this_assigned_ip = this_assigned_ip;
         this.sender_socket = ds;
-        try {
-            this_real_ip = InetAddress.getLocalHost();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        this.this_real_ip = this_real_ip;
+
+        //adding current router into table
+        RoverEntry temp_rover = new RoverEntry(this.this_real_ip,
+                this.this_assigned_ip,this.this_real_ip,this.this_assigned_ip,
+                0,this,true);
+        route_table.put(this.this_assigned_ip,temp_rover);
         System.out.println("RT.java line 31: Routing table initialized");
     }
 
@@ -267,6 +269,9 @@ public class Routing_table extends Thread{
                  * directly contact this rover is active.
                  */
                 if(!route_table.containsKey(dest_address)){
+                    if(dest_address.equals(InetAddress.getByName("0.0.0.0"))){
+                        continue;
+                    }
                     System.out.println("RT.java line 269 :Creating router entry at routing_table 269");
                     RoverEntry temp_roverEntry = new RoverEntry(InetAddress.getByName("0.0.0.0"),
                             dest_address,via,this_assigned_ip,
@@ -320,7 +325,7 @@ public class Routing_table extends Thread{
         byte[] hello = new byte[504];
         hello = return_rip_template(hello,1);
         hello = add_entry_to_packet(4,hello,2,
-                this_assigned_ip,this_assigned_ip,1);
+                this_assigned_ip,this_real_ip,0);
         //multicast hello has the route tag value as 1. This ensures that
         //rovers directly connected to the current rover, will discard this
         //after checking their entry table. If a firewall has been lifted,
@@ -371,49 +376,51 @@ public class Routing_table extends Thread{
             if(receiver_real_ip.equals(this_real_ip)){
                 return;
             }
-            byte[] assigned_ip = new byte[4];
-            System.arraycopy(packet, 16, assigned_ip, 0, 4);
-            InetAddress receiver_assigned_ip = InetAddress.getByAddress(assigned_ip);
+            byte[] dest_ip = new byte[4];
+            System.arraycopy(packet, 8, dest_ip, 0, 4);
+            InetAddress receiver_dest_ip = InetAddress.getByAddress(dest_ip);
             //checking if route tag==1 to see if message is multicast hello.
-            if(packet[7]==1 && (route_table.containsKey(receiver_assigned_ip))){
-                return;
-            }else if(packet[7]==1 && !(route_table.containsKey(receiver_assigned_ip))){
-                System.out.println("RT.java line 380: Receiver assignedip "+receiver_assigned_ip);
+            if(packet[7]==1 && (route_table.containsKey(receiver_dest_ip))){
+                RoverEntry temp_rover_entry = route_table.get(receiver_dest_ip);
+                temp_rover_entry.change_metric_and_via(1,this_real_ip);
+
+            }else if(packet[7]==1 && !(route_table.containsKey(receiver_dest_ip))){
+                System.out.println("RT.java line 380: Receiver assignedip "+receiver_dest_ip);
                 System.out.println("RT.java line 381: Receiver real ip "+receiver_real_ip);
                 System.out.println("RT.java line 382: Creating router entry at routing_table 380");
                 RoverEntry temp_roverEntry =new RoverEntry(receiver_real_ip,
-                        receiver_assigned_ip,this_assigned_ip,this_assigned_ip,
+                        receiver_dest_ip,this_assigned_ip,this_assigned_ip,
                         1,this,true);
-                route_table.put(receiver_assigned_ip, temp_roverEntry);
+                route_table.put(receiver_dest_ip, temp_roverEntry);
                 temp_roverEntry.start();
                 return;
             }
 
-            if (!route_table.containsKey(receiver_assigned_ip)) {
+            if (!route_table.containsKey(receiver_dest_ip)) {
                 //this id for rovers that do not exist in the Route table
                 //any rover that can send a message is directly connected to
                 //this rover and hence has a metric of 1.
-                if(assigned_ip.equals(InetAddress.getByName("0.0.0.0"))){
+                if(dest_ip.equals(InetAddress.getByName("0.0.0.0"))){
                     System.out.println(Arrays.toString(packet));
                 }
                 System.out.println("RT.java 395: creating new rover entry");
-                System.out.println("RT.java 396: Receiver assignedip "+receiver_assigned_ip);
+                System.out.println("RT.java 396: Receiver assignedip "+receiver_dest_ip);
                 System.out.println("RT.java 397: Receiver real ip "+receiver_real_ip);
                 RoverEntry temp_roverEntry =new RoverEntry(receiver_real_ip,
-                        receiver_assigned_ip,this_assigned_ip,this_assigned_ip,
+                        receiver_dest_ip,this_assigned_ip,this_assigned_ip,
                         1,this,true);
-                route_table.put(receiver_assigned_ip, temp_roverEntry);
+                route_table.put(receiver_dest_ip, temp_roverEntry);
                 temp_roverEntry.start();
 
 
-            } else if(route_table.containsKey(receiver_assigned_ip))
+            } else if(route_table.containsKey(receiver_dest_ip))
             //this elseif condition is for Route table entries that exist as inactive rovers
             //i.e rovers that are not connected directly to this rover but
             //whose entry has been learned from another rover. As they have now
             //contacted us directly, they now become an active rover and their
             //metric has to be changed to 1.
             {
-                RoverEntry temp_roverEntry = route_table.get(receiver_assigned_ip);
+                RoverEntry temp_roverEntry = route_table.get(receiver_dest_ip);
                 if(temp_roverEntry.getMetric()!=1){
                     //update metric to 1, set next hop to current rover
                     temp_roverEntry.change_metric_and_via(1,this_assigned_ip);
@@ -421,7 +428,7 @@ public class Routing_table extends Thread{
                     temp_roverEntry.setReal_router_address(receiver_real_ip);
                 }
             }
-            RoverEntry temp_roverEntry = route_table.get(receiver_assigned_ip);
+            RoverEntry temp_roverEntry = route_table.get(receiver_dest_ip);
             //as soon as we get a packet from a rover, we update rover's last_updated
             //metric
             temp_roverEntry.update_timer();
@@ -432,13 +439,13 @@ public class Routing_table extends Thread{
             //the request is processed
             if ((command_byte[0] & 0xff) == 1) {
                 //prepare the packet to send according to request
-                byte[] rip_packet = process_incoming_request(receiver_assigned_ip, packet);
+                byte[] rip_packet = process_incoming_request(receiver_dest_ip, packet);
                 //spawn a thread to send a packet.
                 System.out.println("RT.java 433: Sending from process_incoming packet after process incoming request");
                 new Sender(rip_packet, receiver_real_ip,sender_socket).start();
             } else if ((command_byte[0] & 0xff) == 2) {
                 //use the information from the incoming packet to update table.
-                process_incoming_response(receiver_assigned_ip, packet);
+                process_incoming_response(receiver_dest_ip, packet);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -453,17 +460,16 @@ public class Routing_table extends Thread{
             for (InetAddress i1 : route_table.keySet()) {
                 RoverEntry temp_roverEntry = route_table.get(i1);
                 InetAddress dest = temp_roverEntry.getAssigned_address();
-                InetAddress via = temp_roverEntry.getVia_router();
-                RoverEntry via_roverEntry = route_table.get(via);
-                InetAddress via_real_ip = via_roverEntry.getReal_router_address();
                 System.out.print(dest + "\t");//address
-                System.out.print(via_real_ip + "\t");
+                InetAddress via = temp_roverEntry.getVia_router();
+//                RoverEntry via_roverEntry = route_table.get(via);
+//                InetAddress via_real_ip = via_roverEntry.getReal_router_address();
+                System.out.print(via + "\t");
                 int cost = temp_roverEntry.getMetric();
                 System.out.println(cost);
             }
         }catch (Exception e){
             e.printStackTrace();
-            System.out.println();
             /**
              * remove this
              */
