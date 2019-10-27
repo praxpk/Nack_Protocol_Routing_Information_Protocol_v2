@@ -19,12 +19,15 @@ public class Sender extends Thread {
     }
 
     public void run() {
+        try{
         System.out.println("S.java line 22: In sender");
+        if(destination_address.equals(InetAddress.getByName("0.0.0.0"))){
+            return;
+        }
         DatagramPacket message = new DatagramPacket
                 (packet_data,packet_data.length,
                         destination_address,destination_port);
         System.out.println("S.java line 26: sending to "+ destination_address);
-        try {
             sender.send(message);
         }catch (Exception e){
             e.printStackTrace();

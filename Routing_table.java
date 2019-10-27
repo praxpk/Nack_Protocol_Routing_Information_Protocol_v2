@@ -268,7 +268,7 @@ public class Routing_table extends Thread{
                  */
                 if(!route_table.containsKey(dest_address)){
                     System.out.println("RT.java line 269 :Creating router entry at routing_table 269");
-                    RoverEntry temp_roverEntry = new RoverEntry(null,
+                    RoverEntry temp_roverEntry = new RoverEntry(InetAddress.getByName("0.0.0.0"),
                             dest_address,via,this_assigned_ip,
                             (metric[0]&0xff)+fixed_cost,
                             this,false);
@@ -445,20 +445,28 @@ public class Routing_table extends Thread{
         }
     }
     public void print_routing_table(){
-        System.out.print("Address\t");
-        System.out.print("Next Hop\t");
-        System.out.println("Cost");
-        System.out.println("===================================================================");
-        for(InetAddress i1:route_table.keySet()){
-            RoverEntry temp_roverEntry = route_table.get(i1);
-            InetAddress dest = temp_roverEntry.getAssigned_address();
-            System.out.print(dest+"\t");//address
-            InetAddress via = temp_roverEntry.getVia_router();
-            RoverEntry via_roverEntry = route_table.get(via);
-            InetAddress via_real_ip = via_roverEntry.getReal_router_address();
-            System.out.print(via_real_ip+"\t");
-            int cost = temp_roverEntry.getMetric();
-            System.out.println(cost);
+        try {
+            System.out.print("Address\t");
+            System.out.print("Next Hop\t");
+            System.out.println("Cost");
+            System.out.println("===================================================================");
+            for (InetAddress i1 : route_table.keySet()) {
+                RoverEntry temp_roverEntry = route_table.get(i1);
+                InetAddress dest = temp_roverEntry.getAssigned_address();
+                InetAddress via = temp_roverEntry.getVia_router();
+                RoverEntry via_roverEntry = route_table.get(via);
+                InetAddress via_real_ip = via_roverEntry.getReal_router_address();
+                System.out.print(dest + "\t");//address
+                System.out.print(via_real_ip + "\t");
+                int cost = temp_roverEntry.getMetric();
+                System.out.println(cost);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println();
+            /**
+             * remove this
+             */
         }
     }
 
