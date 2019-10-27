@@ -29,7 +29,7 @@ public class Routing_table extends Thread{
         //adding current router into table
         RoverEntry temp_rover = new RoverEntry(this.this_real_ip,
                 this.this_assigned_ip,this.this_real_ip,this.this_assigned_ip,
-                0,this,true);
+                0,this,false);
         route_table.put(this.this_assigned_ip,temp_rover);
         System.out.println("RT.java line 31: Routing table initialized");
     }
@@ -258,7 +258,7 @@ public class Routing_table extends Thread{
             try {
                 dest_address = InetAddress.getByAddress(dest_byte);
                 via = InetAddress.getByAddress(next_hop);
-                if(dest_address==InetAddress.getByName("0.0.0.0") &&
+                if(dest_address.equals(InetAddress.getByName("0.0.0.0")) &&
                         (metric[0]&0xff)==0){
                     break;
                     //to prevent iterating through empty entries.
@@ -289,11 +289,13 @@ public class Routing_table extends Thread{
                     //if the next hop in the rover object is the same as the
                     //ip address of the packer sender then we update
                     if (temp_roverEntry.getVia_router()==from_address){
+                        System.out.println("RT.java line 292 :updating routing table");
                         temp_roverEntry.setMetric((fixed_cost+(metric[0]&0xff)));
                     }
                     //we do not update if the via router address is different
 
                 } else if((fixed_cost+(metric[0]&0xff))<temp_metric){
+                    System.out.println("RT.java line 298 :updating routing table");
                     temp_roverEntry.change_metric_and_via(
                             (fixed_cost+(metric[0]&0xff)),from_address);
 
@@ -373,13 +375,16 @@ public class Routing_table extends Thread{
             byte[] packet = p1.getB();
             InetAddress receiver_real_ip = p1.getA();
             //to discard multicast updates from the same rover.
-            if(receiver_real_ip.equals(this_real_ip)){
-                return;
-            }
             byte[] dest_ip = new byte[4];
             System.arraycopy(packet, 8, dest_ip, 0, 4);
+            if(dest_ip[0]==0){
+                return;
+            }
             InetAddress receiver_dest_ip = InetAddress.getByAddress(dest_ip);
             //checking if route tag==1 to see if message is multicast hello.
+            if(receiver_real_ip.equals(this_real_ip)||receiver_dest_ip.equals(this_assigned_ip)){
+                return;
+            }
             if(packet[7]==1 && (route_table.containsKey(receiver_dest_ip))){
                 RoverEntry temp_rover_entry = route_table.get(receiver_dest_ip);
                 temp_rover_entry.change_metric_and_via(1,this_real_ip);
@@ -400,9 +405,6 @@ public class Routing_table extends Thread{
                 //this id for rovers that do not exist in the Route table
                 //any rover that can send a message is directly connected to
                 //this rover and hence has a metric of 1.
-                if(dest_ip.equals(InetAddress.getByName("0.0.0.0"))){
-                    System.out.println(Arrays.toString(packet));
-                }
                 System.out.println("RT.java 395: creating new rover entry");
                 System.out.println("RT.java 396: Receiver assignedip "+receiver_dest_ip);
                 System.out.println("RT.java 397: Receiver real ip "+receiver_real_ip);
@@ -441,10 +443,12 @@ public class Routing_table extends Thread{
                 //prepare the packet to send according to request
                 byte[] rip_packet = process_incoming_request(receiver_dest_ip, packet);
                 //spawn a thread to send a packet.
-                System.out.println("RT.java 433: Sending from process_incoming packet after process incoming request");
+                System.out.println("RT.java 444: Sending from process_incoming packet after process incoming request");
                 new Sender(rip_packet, receiver_real_ip,sender_socket).start();
             } else if ((command_byte[0] & 0xff) == 2) {
                 //use the information from the incoming packet to update table.
+                System.out.println("RT.java 448: Process_incoming response");
+                System.out.println("RT.java 449: Process_incoming response - receiver_dest_ip = "+receiver_dest_ip);
                 process_incoming_response(receiver_dest_ip, packet);
             }
         }catch (Exception e){
