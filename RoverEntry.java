@@ -11,7 +11,6 @@ public class RoverEntry extends Thread{
     private boolean terminate_rover;
     private Routing_table rt_object;
     private InetAddress assigned_address;
-    private InetAddress local_host_ip_address;
     private InetAddress assigned_address_current_rover;
 
     public RoverEntry(InetAddress real_router_address, InetAddress assigned_address,
@@ -33,9 +32,10 @@ public class RoverEntry extends Thread{
         this.rt_object = rt_object;
         this.assigned_address = assigned_address;
         this.assigned_address_current_rover = assigned_address_current_rover;
-        System.out.println("Rover entry.java line 36:assigned address = "+assigned_address+" initialized." +
-                " Real Router Address = "+real_router_address+". Via_router = "+via_router);
+//        System.out.println("Rover entry.java line 36:assigned address = "+assigned_address+" initialized." +
+//                " Real Router Address = "+real_router_address+". Via_router = "+via_router);
     }
+
 
     public InetAddress getReal_router_address() {
         return real_router_address;
@@ -79,6 +79,10 @@ public class RoverEntry extends Thread{
     }
 
     public void change_metric_and_via(int metric, InetAddress via){
+        if(this.metric==16){
+            System.out.println("old metric 16");
+            System.out.println("changing to "+metric+" by "+via);
+        }
         this.metric = metric;
         this.via_router = via;
         this.route_change_flag = true;
@@ -111,7 +115,7 @@ public class RoverEntry extends Thread{
                     byte [] packet = rt_object.prepare_triggered_update
                             (assigned_address,assigned_address_current_rover,temp_metric);
                     InetAddress real_ip_of_receiver = rt_object.obtain_real_ip_address(i1);
-                    System.out.println("RE.java line 113: Sending from RoverEntry under route change flag"+assigned_address);
+//                    System.out.println("RE.java line 113: Sending from RoverEntry under route change flag"+assigned_address);
                     new Sender(packet,real_ip_of_receiver,rt_object.sender_socket).start();
                 }
                 this.route_change_flag = false;
@@ -124,10 +128,6 @@ public class RoverEntry extends Thread{
                 //create single entry packet
                 //obtain neighbours
                 //send triggered update
-                /**
-                 * update metric to 16 for all the rovers
-                 * that can go through this rover
-                 */
                 byte [] packet = rt_object.prepare_triggered_update
                         (assigned_address,assigned_address_current_rover,metric);
                 //update the metric of all rovers that go through this rover as 16
@@ -135,7 +135,7 @@ public class RoverEntry extends Thread{
 
                 for(InetAddress i1:rt_object.obtain_neighbours()){
                     InetAddress real_ip_of_receiver = rt_object.obtain_real_ip_address(i1);
-                    System.out.println("RE.java line 137: Sending from RoverEntry under greater than 10000 "+assigned_address);
+//                    System.out.println("RE.java line 137: Sending from RoverEntry under greater than 10000 "+assigned_address);
                     new Sender(packet,real_ip_of_receiver,rt_object.sender_socket).start();
                 }
                 //rover entry is now deactivated, it will reactivate if a

@@ -7,7 +7,6 @@ public class Client extends Thread{
     private int packet_size = 504;
     private int listen_port = 60000;
     private byte [] received_msg = new byte[packet_size];
-    private byte [] received_multicast = new byte[packet_size];
     private DatagramSocket socket_listen;
     boolean listen;
     private Routing_table route_table_object;

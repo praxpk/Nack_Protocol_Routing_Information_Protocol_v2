@@ -31,7 +31,7 @@ public class Routing_table extends Thread{
                 this.this_assigned_ip,this.this_real_ip,this.this_assigned_ip,
                 0,this,false);
         route_table.put(this.this_assigned_ip,temp_rover);
-        System.out.println("RT.java line 31: Routing table initialized");
+//        System.out.println("RT.java line 31: Routing table initialized");
     }
 
     public InetAddress obtain_real_ip_address(InetAddress assigned_ip)
@@ -151,7 +151,7 @@ public class Routing_table extends Thread{
     //response - regular updates
     //response - triggered updates
 
-    public byte[] prepare_entire_ripPacket(InetAddress receiver,
+    public byte[] prepare_entire_ripPacket(InetAddress receiver, InetAddress receiver_real_ip,
                                            int command, byte[] rip_packet)
     /**
      * This provides the rip packet that has to be sent to the receiver
@@ -168,7 +168,7 @@ public class Routing_table extends Thread{
         for(InetAddress key : route_table.keySet()){
             temp_address = key;
             temp_roverEntry = route_table.get(key);
-            if(temp_roverEntry.getVia_router()==receiver){
+            if(temp_roverEntry.getVia_router()==receiver_real_ip){
                 //split-horizon, any entry learned through a router
                 //is to be sent as a metric of 16 and via = current router.
                 try {
@@ -204,7 +204,7 @@ public class Routing_table extends Thread{
     //response - regular updates
     //response - triggered updates
 
-    public byte [] process_incoming_request(InetAddress to_address, byte[] packet)
+    public byte [] process_incoming_request(InetAddress to_address,InetAddress to_real_ip, byte[] packet)
     /**
      * This method helps process requests packets (where the command byte is 1).
      */
@@ -221,7 +221,7 @@ public class Routing_table extends Thread{
                 (address_family_identifier[0] & 0xff) == 0
                 && (dest_metric[3] & 0xff) == 16) {
             //send the entire table
-             response_packet = prepare_entire_ripPacket(to_address,2,response_packet);
+             response_packet = prepare_entire_ripPacket(to_address,to_real_ip,2,response_packet);
         } else if ((address_family_identifier[1] & 0xff) == 0 &&
                 (address_family_identifier[0] & 0xff) == 2) {
             //send only requested RTEs.
@@ -243,6 +243,9 @@ public class Routing_table extends Thread{
         //fixed_cost is the cost it takes to go from this RoverEntry to the
         //rover that has sent the packet. This is 1 as an incoming packet
         //directly from the rover tells us that is is directly connected to us.
+        if(from_address.equals(this_assigned_ip)){
+            return;
+        }
         int fixed_cost = 1;
         byte[] dest_byte = new byte[4];
         byte[] next_hop = new byte[4];
@@ -272,10 +275,14 @@ public class Routing_table extends Thread{
                     if(dest_address.equals(InetAddress.getByName("0.0.0.0"))){
                         continue;
                     }
-                    System.out.println("RT.java line 269 :Creating router entry at routing_table 269");
+//                    System.out.println("RT.java line 269 :Creating router entry at routing_table 269");
+                    int cost = (metric[0]&0xff)+fixed_cost;
+                    if(cost>16){
+                        cost=16;
+                    }
                     RoverEntry temp_roverEntry = new RoverEntry(InetAddress.getByName("0.0.0.0"),
                             dest_address,via,this_assigned_ip,
-                            (metric[0]&0xff)+fixed_cost,
+                            cost,
                             this,false);
                     route_table.put(dest_address, temp_roverEntry);
                     temp_roverEntry.start();
@@ -290,12 +297,18 @@ public class Routing_table extends Thread{
                     //ip address of the packer sender then we update
                     if (temp_roverEntry.getVia_router()==from_address){
                         System.out.println("RT.java line 292 :updating routing table");
-                        temp_roverEntry.setMetric((fixed_cost+(metric[0]&0xff)));
+                        System.out.println("RT.java line 293 : packet from "+from_address);
+                        int cost = (fixed_cost+(metric[0]&0xff));
+                        if (cost>16){
+                            cost=16;
+                        }
+                        temp_roverEntry.setMetric(cost);
                     }
                     //we do not update if the via router address is different
 
                 } else if((fixed_cost+(metric[0]&0xff))<temp_metric){
-                    System.out.println("RT.java line 298 :updating routing table");
+                    System.out.println("RT.java line 299 :updating routing table");
+                    System.out.println("RT.java line 300 : packet from "+from_address);
                     temp_roverEntry.change_metric_and_via(
                             (fixed_cost+(metric[0]&0xff)),from_address);
 
@@ -344,10 +357,11 @@ public class Routing_table extends Thread{
         byte[] packet = new byte[504];
         List<InetAddress> neighbours = obtain_neighbours();
         for(InetAddress i1:neighbours){
-            packet = prepare_entire_ripPacket(i1,2,packet);
             RoverEntry temp_roverEntry = route_table.get(i1);
+            packet = prepare_entire_ripPacket(i1,temp_roverEntry.getReal_router_address(),2,packet);
+
             InetAddress sender_address = temp_roverEntry.getReal_router_address();
-            System.out.println("RT.java line 342: Sending from Routing_table send_regular_update");
+//            System.out.println("RT.java line 342: Sending from Routing_table send_regular_update");
             new Sender(packet,sender_address,sender_socket).start();
         }
 
@@ -388,11 +402,12 @@ public class Routing_table extends Thread{
             if(packet[7]==1 && (route_table.containsKey(receiver_dest_ip))){
                 RoverEntry temp_rover_entry = route_table.get(receiver_dest_ip);
                 temp_rover_entry.change_metric_and_via(1,this_real_ip);
+                temp_rover_entry.update_timer();
 
             }else if(packet[7]==1 && !(route_table.containsKey(receiver_dest_ip))){
-                System.out.println("RT.java line 380: Receiver assignedip "+receiver_dest_ip);
-                System.out.println("RT.java line 381: Receiver real ip "+receiver_real_ip);
-                System.out.println("RT.java line 382: Creating router entry at routing_table 380");
+//                System.out.println("RT.java line 380: Receiver assignedip "+receiver_dest_ip);
+//                System.out.println("RT.java line 381: Receiver real ip "+receiver_real_ip);
+//                System.out.println("RT.java line 382: Creating router entry at routing_table 380");
                 RoverEntry temp_roverEntry =new RoverEntry(receiver_real_ip,
                         receiver_dest_ip,this_assigned_ip,this_assigned_ip,
                         1,this,true);
@@ -405,9 +420,9 @@ public class Routing_table extends Thread{
                 //this id for rovers that do not exist in the Route table
                 //any rover that can send a message is directly connected to
                 //this rover and hence has a metric of 1.
-                System.out.println("RT.java 395: creating new rover entry");
-                System.out.println("RT.java 396: Receiver assignedip "+receiver_dest_ip);
-                System.out.println("RT.java 397: Receiver real ip "+receiver_real_ip);
+//                System.out.println("RT.java 395: creating new rover entry");
+//                System.out.println("RT.java 396: Receiver assignedip "+receiver_dest_ip);
+//                System.out.println("RT.java 397: Receiver real ip "+receiver_real_ip);
                 RoverEntry temp_roverEntry =new RoverEntry(receiver_real_ip,
                         receiver_dest_ip,this_assigned_ip,this_assigned_ip,
                         1,this,true);
@@ -422,10 +437,13 @@ public class Routing_table extends Thread{
             //contacted us directly, they now become an active rover and their
             //metric has to be changed to 1.
             {
+                /*
+                checkchangemetric
+                 */
                 RoverEntry temp_roverEntry = route_table.get(receiver_dest_ip);
                 if(temp_roverEntry.getMetric()!=1){
                     //update metric to 1, set next hop to current rover
-                    temp_roverEntry.change_metric_and_via(1,this_assigned_ip);
+                    temp_roverEntry.change_metric_and_via(1,this_real_ip);
                     //update real ip address of rover
                     temp_roverEntry.setReal_router_address(receiver_real_ip);
                 }
@@ -441,15 +459,18 @@ public class Routing_table extends Thread{
             //the request is processed
             if ((command_byte[0] & 0xff) == 1) {
                 //prepare the packet to send according to request
-                byte[] rip_packet = process_incoming_request(receiver_dest_ip, packet);
+                byte[] rip_packet = process_incoming_request(receiver_dest_ip,receiver_real_ip, packet);
                 //spawn a thread to send a packet.
-                System.out.println("RT.java 444: Sending from process_incoming packet after process incoming request");
+//                System.out.println("RT.java 446: Sending from process_incoming packet after process incoming request");
+//                System.out.println("RT.java 447: Process_incoming response - receiver_dest_ip = "+receiver_dest_ip);
+//                System.out.println("RT.java 448: Process_incoming response - receiver_real_ip = "+receiver_real_ip);
                 new Sender(rip_packet, receiver_real_ip,sender_socket).start();
             } else if ((command_byte[0] & 0xff) == 2) {
                 //use the information from the incoming packet to update table.
-                System.out.println("RT.java 448: Process_incoming response");
-                System.out.println("RT.java 449: Process_incoming response - receiver_dest_ip = "+receiver_dest_ip);
-                process_incoming_response(receiver_dest_ip, packet);
+//                System.out.println("RT.java 452: Process_incoming response");
+//                System.out.println("RT.java 453: Process_incoming response - receiver_dest_ip = "+receiver_dest_ip);
+//                System.out.println("RT.java 454: Process_incoming response - receiver_real_ip = "+receiver_real_ip);
+                process_incoming_response(receiver_real_ip, packet);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -464,13 +485,15 @@ public class Routing_table extends Thread{
             for (InetAddress i1 : route_table.keySet()) {
                 RoverEntry temp_roverEntry = route_table.get(i1);
                 InetAddress dest = temp_roverEntry.getAssigned_address();
-                System.out.print(dest + "\t");//address
-                InetAddress via = temp_roverEntry.getVia_router();
-//                RoverEntry via_roverEntry = route_table.get(via);
-//                InetAddress via_real_ip = via_roverEntry.getReal_router_address();
+                System.out.print(dest+"/24" + "\t");//address
+                String via = temp_roverEntry.getVia_router().getHostAddress();
                 System.out.print(via + "\t");
                 int cost = temp_roverEntry.getMetric();
+                if(cost>16){
+                    cost=16;
+                }
                 System.out.println(cost);
+
             }
         }catch (Exception e){
             e.printStackTrace();
