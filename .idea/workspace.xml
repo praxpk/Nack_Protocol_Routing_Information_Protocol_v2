@@ -4,10 +4,12 @@
     <list default="true" id="d1be017c-29ac-4711-b2b0-15a2aed386a9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client_Multicast.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client_Multicast.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Routing_table.java" beforeDir="false" afterPath="$PROJECT_DIR$/Routing_table.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Rover.java" beforeDir="false" afterPath="$PROJECT_DIR$/Rover.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RoverEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/RoverEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Sender.java" beforeDir="false" afterPath="$PROJECT_DIR$/Sender.java" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -25,18 +27,23 @@
   </component>
   <component name="ProjectId" id="1SlfqvB10ebfUueO0amGL2MAe5M" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
+  <component name="ServiceViewManager">
+    <option name="viewStates">
       <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
       </list>
     </option>
   </component>
@@ -72,7 +79,14 @@
       <option name="project" value="LOCAL" />
       <updated>1572210171274</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="changes 4">
+      <created>1572231997724</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1572231997724</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -80,7 +94,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
@@ -90,6 +106,21 @@
     <MESSAGE value="changes" />
     <MESSAGE value="changes 2" />
     <MESSAGE value="changes 3" />
-    <option name="LAST_COMMIT_MESSAGE" value="changes 3" />
+    <MESSAGE value="changes 4" />
+    <option name="LAST_COMMIT_MESSAGE" value="changes 4" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="168" y="54" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1575756918252">
+      <screen x="55" y="27" width="1311" height="741" />
+    </state>
+    <state x="168" y="54" key="#com.intellij.execution.impl.EditConfigurationsDialog/55.27.1311.741@55.27.1311.741" timestamp="1575756918252" />
+    <state x="366" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1575734659763">
+      <screen x="55" y="27" width="1311" height="741" />
+    </state>
+    <state x="366" y="225" key="com.intellij.ide.util.TipDialog/55.27.1311.741@55.27.1311.741" timestamp="1575734659763" />
+    <state x="355" y="134" width="710" height="526" key="find.popup" timestamp="1575791487462">
+      <screen x="55" y="27" width="1311" height="741" />
+    </state>
+    <state x="355" y="134" width="710" height="526" key="find.popup/55.27.1311.741@55.27.1311.741" timestamp="1575791487462" />
   </component>
 </project>

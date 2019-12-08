@@ -50,12 +50,16 @@ public class Rover {
             while(true){
                 try {
                     byte[] hello = routing_table.multicast_hello();
-
+                    byte[] update_packet = new byte[504];
+                    update_packet = routing_table.prepare_entire_ripPacket(2,update_packet);
                     DatagramPacket hello_packet = new DatagramPacket(hello, hello.length,
                             multicast_group, 59999);
                     multicast_socket.send(hello_packet);
+                    DatagramPacket update = new DatagramPacket(update_packet, update_packet.length,
+                            multicast_group, 59999);
+                    multicast_socket.send(update);
 //                System.out.println(Arrays.toString(hello_packet.getData()));
-                    Thread.sleep(5000);
+                    Thread.sleep(3000);
                     routing_table.send_regular_update();
                     routing_table.print_routing_table();
                 }catch (Exception e){
