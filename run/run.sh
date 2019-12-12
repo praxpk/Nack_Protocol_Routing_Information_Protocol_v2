@@ -10,5 +10,5 @@ node run/run.js $1 &
 sleep 10
 
 #finally, start the initial program
-java Rover $1
+java Rover $1 $2 $3
 

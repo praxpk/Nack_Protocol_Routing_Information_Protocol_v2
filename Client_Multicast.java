@@ -73,8 +73,7 @@ public class Client_Multicast extends Thread{
                     route_table_object.deposit_packet(incoming_multicast.getAddress(), incoming_multicast.getData());
                     if (route_table_object.containsRoverEntry(dest)) {
                         r1 = route_table_object.getRoverEntry(dest);
-                        r1.update_timer();
-                        r1.setMetric(1);
+                        r1.change_metric_and_via(1, incoming_multicast.getAddress());
                     } else {
                         route_table_object.addRoverEntry(via_ip, dest);
 //                        r1.change_metric_and_via(1, InetAddress.getLocalHost());

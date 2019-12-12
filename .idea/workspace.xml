@@ -9,6 +9,7 @@
       <change beforePath="$PROJECT_DIR$/Rover.java" beforeDir="false" afterPath="$PROJECT_DIR$/Rover.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RoverEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/RoverEntry.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sender.java" beforeDir="false" afterPath="$PROJECT_DIR$/Sender.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run/run.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +87,14 @@
       <option name="project" value="LOCAL" />
       <updated>1572231997724</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="changes 4">
+      <created>1575792189726</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1575792189726</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -110,17 +118,29 @@
     <option name="LAST_COMMIT_MESSAGE" value="changes 4" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="168" y="54" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1575756918252">
+    <state x="168" y="54" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1575972825059">
       <screen x="55" y="27" width="1311" height="741" />
     </state>
-    <state x="168" y="54" key="#com.intellij.execution.impl.EditConfigurationsDialog/55.27.1311.741@55.27.1311.741" timestamp="1575756918252" />
-    <state x="366" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1575734659763">
+    <state x="168" y="54" key="#com.intellij.execution.impl.EditConfigurationsDialog/55.27.1311.741@55.27.1311.741" timestamp="1575972825059" />
+    <state x="187" y="27" width="1036" height="741" key="CommitChangelistDialog2" timestamp="1575792188958">
       <screen x="55" y="27" width="1311" height="741" />
     </state>
-    <state x="366" y="225" key="com.intellij.ide.util.TipDialog/55.27.1311.741@55.27.1311.741" timestamp="1575734659763" />
-    <state x="355" y="134" width="710" height="526" key="find.popup" timestamp="1575791487462">
+    <state x="187" y="27" width="1036" height="741" key="CommitChangelistDialog2/55.27.1311.741@55.27.1311.741" timestamp="1575792188958" />
+    <state x="305" y="132" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1575792198534">
       <screen x="55" y="27" width="1311" height="741" />
     </state>
-    <state x="355" y="134" width="710" height="526" key="find.popup/55.27.1311.741@55.27.1311.741" timestamp="1575791487462" />
+    <state x="305" y="132" width="800" height="528" key="Vcs.Push.Dialog.v2/55.27.1311.741@55.27.1311.741" timestamp="1575792198534" />
+    <state x="366" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1576104832450">
+      <screen x="55" y="27" width="1311" height="741" />
+    </state>
+    <state x="366" y="225" key="com.intellij.ide.util.TipDialog/55.27.1311.741@55.27.1311.741" timestamp="1576104832450" />
+    <state x="355" y="134" width="710" height="526" key="find.popup" timestamp="1576108614720">
+      <screen x="55" y="27" width="1311" height="741" />
+    </state>
+    <state x="355" y="134" width="710" height="526" key="find.popup/55.27.1311.741@55.27.1311.741" timestamp="1576108614720" />
+    <state x="373" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1576106528868">
+      <screen x="55" y="27" width="1311" height="741" />
+    </state>
+    <state x="373" y="89" width="672" height="678" key="search.everywhere.popup/55.27.1311.741@55.27.1311.741" timestamp="1576106528868" />
   </component>
 </project>

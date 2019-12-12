@@ -9,10 +9,15 @@ public class Sender extends Thread {
     private int destination_port = 60000;
     private static int packet_num = 0;
     private String id;
+    DatagramPacket message;
 
-    public Sender(byte[] packet_data, InetAddress destination_address,DatagramSocket datagramSocket, String id) {
+
+    public Sender(byte[] packet_data, InetAddress destination_address,DatagramSocket datagramSocket) {
         this.packet_data = packet_data;
         this.destination_address = destination_address;
+        message = new DatagramPacket
+                (packet_data,packet_data.length,
+                        destination_address,destination_port);
         this.id = id;
         try {
             this.sender = datagramSocket;
@@ -20,6 +25,12 @@ public class Sender extends Thread {
             e.printStackTrace();
         }
     }
+
+    public Sender(byte[] msg, InetAddress dest_address, int dest_port, DatagramSocket ds1){
+        this.message = new DatagramPacket(msg,msg.length,dest_address,dest_port);
+        this.sender = ds1;
+    }
+
     public void print_packet(byte [] packet, InetAddress sender){
         try {
             byte[] temp = new byte[4];
@@ -48,15 +59,10 @@ public class Sender extends Thread {
     public void run() {
         try{
 //        System.out.println("S.java line 22: In sender");
-        if(destination_address.equals(InetAddress.getByName("0.0.0.0"))){
-            return;
-        }
-        packet_num++;
-//        print_packet(packet_data,destination_address);
-        DatagramPacket message = new DatagramPacket
-                (packet_data,packet_data.length,
-                        destination_address,destination_port);
-//        System.out.println("S.java line 26: sending to "+ destination_address);
+//        if(destination_address.equals(InetAddress.getByName("0.0.0.0"))){
+//            return;
+//        }
+//        packet_num++;
             sender.send(message);
         }catch (Exception e){
             e.printStackTrace();

@@ -426,7 +426,7 @@ public class Routing_table extends Thread{
 //            print_packet(packet,sender_address);
 //            System.out.println("RT342:send_regular_update");
                 Thread.sleep(ThreadLocalRandom.current().nextLong(600, 800));
-                new Sender(packet, sender_address, sender_socket, "RT342:send_regular_update to " + i1).start();
+                new Sender(packet, sender_address, sender_socket).start();
             }
 
         }catch (Exception e){
