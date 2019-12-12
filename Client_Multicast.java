@@ -1,9 +1,6 @@
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
-import java.util.Arrays;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Client_Multicast extends Thread{
     private int packet_size = 504;
@@ -33,10 +30,6 @@ public class Client_Multicast extends Thread{
                 if(next_hop.equals(InetAddress.getLocalHost())){
                     packet[i+19]=16;
                 }
-//                System.out.println("Rcvrip = " + rcvr + "," +
-//                        " Destination address = " + dest + ", Next hop = " + next_hop +
-//                        ", metric = " + (packet[i + 19] & 0xff));
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,16 +60,12 @@ public class Client_Multicast extends Thread{
                     dest = InetAddress.getByAddress(temp);
                     System.arraycopy(incoming_multicast.getData(), 16, temp, 0, 4);
                     via_ip = InetAddress.getByAddress(temp);
-//                    System.out.println("CM.java line 27: Multicast received from "+incoming_multicast.getAddress());
-//                    System.out.println("CM.java line 28: local host "+InetAddress.getLocalHost());
-//                    print_packet(incoming_multicast.getData(),incoming_multicast.getAddress());
                     route_table_object.deposit_packet(incoming_multicast.getAddress(), incoming_multicast.getData());
                     if (route_table_object.containsRoverEntry(dest)) {
                         r1 = route_table_object.getRoverEntry(dest);
                         r1.change_metric_and_via(1, incoming_multicast.getAddress());
                     } else {
                         route_table_object.addRoverEntry(via_ip, dest);
-//                        r1.change_metric_and_via(1, InetAddress.getLocalHost());
                     }
                 } else if (command==2){
                         byte[] data = incoming_multicast.getData();

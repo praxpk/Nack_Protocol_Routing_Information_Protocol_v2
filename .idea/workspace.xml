@@ -9,7 +9,6 @@
       <change beforePath="$PROJECT_DIR$/Rover.java" beforeDir="false" afterPath="$PROJECT_DIR$/Rover.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RoverEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/RoverEntry.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sender.java" beforeDir="false" afterPath="$PROJECT_DIR$/Sender.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run/run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run/run.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,18 +121,18 @@
       <screen x="55" y="27" width="1311" height="741" />
     </state>
     <state x="168" y="54" key="#com.intellij.execution.impl.EditConfigurationsDialog/55.27.1311.741@55.27.1311.741" timestamp="1575972825059" />
-    <state x="187" y="27" width="1036" height="741" key="CommitChangelistDialog2" timestamp="1575792188958">
+    <state x="187" y="27" width="1036" height="741" key="CommitChangelistDialog2" timestamp="1576119772695">
       <screen x="55" y="27" width="1311" height="741" />
     </state>
-    <state x="187" y="27" width="1036" height="741" key="CommitChangelistDialog2/55.27.1311.741@55.27.1311.741" timestamp="1575792188958" />
-    <state x="305" y="132" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1575792198534">
+    <state x="187" y="27" width="1036" height="741" key="CommitChangelistDialog2/55.27.1311.741@55.27.1311.741" timestamp="1576119772695" />
+    <state x="305" y="132" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1576119783235">
       <screen x="55" y="27" width="1311" height="741" />
     </state>
-    <state x="305" y="132" width="800" height="528" key="Vcs.Push.Dialog.v2/55.27.1311.741@55.27.1311.741" timestamp="1575792198534" />
-    <state x="366" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1576104832450">
+    <state x="305" y="132" width="800" height="528" key="Vcs.Push.Dialog.v2/55.27.1311.741@55.27.1311.741" timestamp="1576119783235" />
+    <state x="366" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1576157634839">
       <screen x="55" y="27" width="1311" height="741" />
     </state>
-    <state x="366" y="225" key="com.intellij.ide.util.TipDialog/55.27.1311.741@55.27.1311.741" timestamp="1576104832450" />
+    <state x="366" y="225" key="com.intellij.ide.util.TipDialog/55.27.1311.741@55.27.1311.741" timestamp="1576157634839" />
     <state x="355" y="134" width="710" height="526" key="find.popup" timestamp="1576108614720">
       <screen x="55" y="27" width="1311" height="741" />
     </state>

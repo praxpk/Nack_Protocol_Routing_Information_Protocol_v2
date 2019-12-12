@@ -3,7 +3,6 @@ import java.io.OutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.MulticastSocket;
 import java.nio.ByteBuffer;
 
 public class Client extends Thread {
@@ -33,13 +32,12 @@ public class Client extends Thread {
 
         this.isServer = false;
         this.isClient = true;
-        current_session_id =0;
+        current_session_id = 0;
         try {
             output = new FileOutputStream("file_name");
-        }catch(Exception e ){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-//        this.dc1 = new DataClient(socket_listen,assigned_ip,route_table_object,output);
     }
 
 
@@ -60,7 +58,7 @@ public class Client extends Thread {
 
     }
 
-    public void setServer(Server s1){
+    public void setServer(Server s1) {
         this.server = s1;
     }
 
@@ -81,10 +79,6 @@ public class Client extends Thread {
                 if (next_hop.equals(InetAddress.getLocalHost())) {
                     packet[i + 19] = 16;
                 }
-//                System.out.println("Rcvrip = " + rcvr + "," +
-//                        " Destination address = " + dest + ", Next hop = " + next_hop +
-//                        ", metric = " + (packet[i + 19] & 0xff));
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -114,56 +108,49 @@ public class Client extends Thread {
                 try {
                     packet_num++;
                     socket_listen.receive(incoming_message);
-                    byte [] packet = incoming_message.getData();
+                    byte[] packet = incoming_message.getData();
                     InetAddress incoming_ip = incoming_message.getAddress();
                     if (incoming_ip.equals(InetAddress.getLocalHost())) {
-//                    System.out.println("received message from "+incoming_message.getAddress()+", now continue");
                         continue;
                     }
                     if ((packet[0] & 0xff) == 2) {
                         byte data[] = poison_reverse(packet);
-
-//                        route_table_object.deposit_packet(incoming_ip
-//                                , data);
                     } else {
-                        byte [] temp = new byte[4];
-                        System.arraycopy(packet,2,temp,0,4);
+                        byte[] temp = new byte[4];
+                        System.arraycopy(packet, 2, temp, 0, 4);
                         InetAddress dest = InetAddress.getByAddress(temp);
-                        System.arraycopy(packet,6,temp,0,4);
+                        System.arraycopy(packet, 6, temp, 0, 4);
                         InetAddress source = InetAddress.getByAddress(temp);
-//                        System.out.println("source = "+source+", dest = "+dest);
-                        if(dest.equals(assigned_ip)){
-                            if(isClient) {
-                                if(isSet(packet[0],7)){
-                                    System.arraycopy(packet,10,temp,0,2);
+                        if (dest.equals(assigned_ip)) {
+                            if (isClient) {
+                                if (isSet(packet[0], 7)) {
+                                    System.arraycopy(packet, 10, temp, 0, 2);
                                     int session_id = byte_to_int(temp);
-                                    if(session_id!=current_session_id){
+                                    if (session_id != current_session_id) {
                                         current_session_id = session_id;
-                                        dc1 = new DataClient(socket_listen,assigned_ip,route_table_object,output);
+                                        dc1 = new DataClient(socket_listen, assigned_ip, route_table_object, output);
                                         dc1.setSender_ip(source);
                                         dc1.setSender_port(incoming_message.getPort());
                                         Thread.sleep(1000);
                                         dc1.start();
                                         dc1.deposit_packet(packet);
                                     }
-                                }else{
+                                } else {
                                     dc1.setSender_ip(source);
                                     dc1.setSender_port(incoming_message.getPort());
                                     dc1.deposit_packet(packet);
                                 }
 
-                            } else if (isServer){
+                            } else if (isServer) {
                                 server.deposit_packet(packet);
                             }
                         } else {
-                            if(route_table_object.containsRoverEntry(assigned_ip)){
+                            if (route_table_object.containsRoverEntry(assigned_ip)) {
                                 InetAddress send_to = route_table_object.getRoverEntry(dest).getVia_router();
-                                new Sender(packet,send_to,socket_listen).start();
+                                new Sender(packet, send_to, socket_listen).start();
                             }
                         }
                     }
-//                print_packet(incoming_message.getData(),incoming_message.getAddress());
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
