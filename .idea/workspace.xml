@@ -3,12 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d1be017c-29ac-4711-b2b0-15a2aed386a9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client_Multicast.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client_Multicast.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Routing_table.java" beforeDir="false" afterPath="$PROJECT_DIR$/Routing_table.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Rover.java" beforeDir="false" afterPath="$PROJECT_DIR$/Rover.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RoverEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/RoverEntry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sender.java" beforeDir="false" afterPath="$PROJECT_DIR$/Sender.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +87,14 @@
       <option name="project" value="LOCAL" />
       <updated>1575792189726</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="changes 4">
+      <created>1576159084617</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1576159084617</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -121,14 +122,14 @@
       <screen x="55" y="27" width="1311" height="741" />
     </state>
     <state x="168" y="54" key="#com.intellij.execution.impl.EditConfigurationsDialog/55.27.1311.741@55.27.1311.741" timestamp="1575972825059" />
-    <state x="187" y="27" width="1036" height="741" key="CommitChangelistDialog2" timestamp="1576119772695">
+    <state x="187" y="27" width="1036" height="741" key="CommitChangelistDialog2" timestamp="1576159083952">
       <screen x="55" y="27" width="1311" height="741" />
     </state>
-    <state x="187" y="27" width="1036" height="741" key="CommitChangelistDialog2/55.27.1311.741@55.27.1311.741" timestamp="1576119772695" />
-    <state x="305" y="132" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1576119783235">
+    <state x="187" y="27" width="1036" height="741" key="CommitChangelistDialog2/55.27.1311.741@55.27.1311.741" timestamp="1576159083952" />
+    <state x="305" y="132" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1576159091462">
       <screen x="55" y="27" width="1311" height="741" />
     </state>
-    <state x="305" y="132" width="800" height="528" key="Vcs.Push.Dialog.v2/55.27.1311.741@55.27.1311.741" timestamp="1576119783235" />
+    <state x="305" y="132" width="800" height="528" key="Vcs.Push.Dialog.v2/55.27.1311.741@55.27.1311.741" timestamp="1576159091462" />
     <state x="366" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1576157634839">
       <screen x="55" y="27" width="1311" height="741" />
     </state>
