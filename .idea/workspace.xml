@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d1be017c-29ac-4711-b2b0-15a2aed386a9" name="Default Changelist" comment="">
+    <list default="true" id="d1be017c-29ac-4711-b2b0-15a2aed386a9" name="Default Changelist" comment="changes 4">
+      <change afterPath="$PROJECT_DIR$/DataClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Lunar rover protocol.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -94,7 +97,14 @@
       <option name="project" value="LOCAL" />
       <updated>1576159084617</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="changes 4">
+      <created>1576159412879</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1576159412879</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -122,14 +132,14 @@
       <screen x="55" y="27" width="1311" height="741" />
     </state>
     <state x="168" y="54" key="#com.intellij.execution.impl.EditConfigurationsDialog/55.27.1311.741@55.27.1311.741" timestamp="1575972825059" />
-    <state x="187" y="27" width="1036" height="741" key="CommitChangelistDialog2" timestamp="1576159083952">
+    <state x="187" y="27" width="1036" height="741" key="CommitChangelistDialog2" timestamp="1576159516157">
       <screen x="55" y="27" width="1311" height="741" />
     </state>
-    <state x="187" y="27" width="1036" height="741" key="CommitChangelistDialog2/55.27.1311.741@55.27.1311.741" timestamp="1576159083952" />
-    <state x="305" y="132" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1576159091462">
+    <state x="187" y="27" width="1036" height="741" key="CommitChangelistDialog2/55.27.1311.741@55.27.1311.741" timestamp="1576159516157" />
+    <state x="305" y="132" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1576159416373">
       <screen x="55" y="27" width="1311" height="741" />
     </state>
-    <state x="305" y="132" width="800" height="528" key="Vcs.Push.Dialog.v2/55.27.1311.741@55.27.1311.741" timestamp="1576159091462" />
+    <state x="305" y="132" width="800" height="528" key="Vcs.Push.Dialog.v2/55.27.1311.741@55.27.1311.741" timestamp="1576159416373" />
     <state x="366" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1576157634839">
       <screen x="55" y="27" width="1311" height="741" />
     </state>
