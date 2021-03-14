@@ -1,6 +1,8 @@
 # NACK Protocol RIP v2 node communicator
 ## This project creates a node in docker that communicates with other instances using RIP protocol.
 
+###     Rover instances communicate with each other using Distance Vector Routing algorithm - RIPv2     Routing table updates through Multicast, applying Poison Reverse to updates. Successful file transfer from one rover to another with packets being dropped.
+
 Communication occurs through binary, each node serializes and deserializes packet information. Each packet adheres to the RIP V2 protocol.
 Each node maintains a table of neighbours, the shortest steps it takes to reach them and the next node along that path.
 
